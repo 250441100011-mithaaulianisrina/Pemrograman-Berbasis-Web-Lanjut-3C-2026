@@ -6,6 +6,9 @@ on:
       - main
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+
 jobs:
   validate-pr-rules:
     name: Validasi Scope Folder & Format Commit
@@ -16,6 +19,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          allow-unsafe-pr-checkout: true
 
       - name: Fetch Target Branch
         run: |
@@ -110,6 +114,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          allow-unsafe-pr-checkout: true
 
       - name: Fetch Target Branch
         run: |
