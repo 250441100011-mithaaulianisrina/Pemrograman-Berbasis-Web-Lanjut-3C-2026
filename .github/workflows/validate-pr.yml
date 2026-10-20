@@ -1,4 +1,4 @@
-name: Validasi PR Praktikum PBWL
+﻿name: Validasi PR Praktikum PBWL
 
 on:
   pull_request:
@@ -36,8 +36,13 @@ jobs:
             exit 1
           fi
 
+          if [ -z "$STUDENT_FOLDERS" ]; then
+            echo "❌ ERROR: Tidak ditemukan perubahan pada folder mahasiswa (format: 12digitNIM-NAMA)!"
+            exit 1
+          fi
+
           # Cek jumlah folder mahasiswa yang disentuh
-          FOLDER_COUNT=$(echo "$STUDENT_FOLDERS" | wc -l)
+          FOLDER_COUNT=$(echo "$STUDENT_FOLDERS" | grep -c -E '^[0-9]{12}-' || true)
           if [ "$FOLDER_COUNT" -gt 1 ]; then
             echo "❌ ERROR: PR Anda mengubah lebih dari 1 folder mahasiswa:"
             echo "$STUDENT_FOLDERS"
@@ -51,29 +56,25 @@ jobs:
         run: |
           echo "🔍 Memeriksa format commit message..."
           
-          # Ambil daftar commit message dalam PR
           COMMITS=$(git log origin/${{ github.base_ref }}..HEAD --oneline --format="%s")
           
           VALID_COMMITS=0
-          TOTAL_NON_MERGE_COMMITS=0
+          TOTAL_COMMITS=0
 
-          # Enable case-insensitive matching di bash
-          shopt -s nocasematch
-          
-          # Pattern fleksibel: NIM (12 angka) + Nama + MODUL <Nomor> + Nama Asprak
-          # Mendukung pemisah berupa (_), (-), atau spasi ( )
-          PATTERN="^[0-9]{12}[_ -]+.+[_ -]+MODUL[ _-]*[0-9]+[_ -]+.+"
+          REGEX='^[0-9]{12}[_ -]+.+[_ -]+([Mm][Oo][Dd][Uu][Ll]|[Mm][Dd][Ll])[ _-]*[0-9]+[_ -]+.+'
 
           while IFS= read -r commit_msg; do
-            # Abaikan commit otomatis buatan Git (seperti Merge branch...)
+            [ -z "$commit_msg" ] && continue
+
+            # Abaikan commit merge otomatis
             if [[ "$commit_msg" =~ ^Merge[[:space:]] ]]; then
               echo "ℹ️ Mengabaikan commit merge otomatis: \"$commit_msg\""
               continue
             fi
 
-            TOTAL_NON_MERGE_COMMITS=$((TOTAL_NON_MERGE_COMMITS + 1))
+            TOTAL_COMMITS=$((TOTAL_COMMITS + 1))
 
-            if [[ "$commit_msg" =~ $PATTERN ]]; then
+            if [[ "$commit_msg" =~ $REGEX ]]; then
               echo "✅ Format Commit Benar: \"$commit_msg\""
               VALID_COMMITS=$((VALID_COMMITS + 1))
             else
@@ -87,7 +88,7 @@ jobs:
             echo "❌ GAGAL: Tidak ditemukan commit yang sesuai format!"
             echo "Format yang diterima: NIM_NamaLengkap_MODUL<X>_NamaAsprak"
             echo "(Boleh menggunakan huruf besar/kecil, pemisah spasi/strip/underscore)"
-            echo "Contoh: 250441100011_MithaAuliaNisrina_MODUL1_KakOkta"
+            echo "Contoh: 250441100096_FahiraAnnisa_Modul3_KakEdi"
             echo "=========================================================="
             exit 1
           fi
