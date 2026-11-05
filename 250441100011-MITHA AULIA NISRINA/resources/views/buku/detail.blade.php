@@ -23,6 +23,30 @@
 
 
             {{-- =====================================================
+                 PESAN SUKSES
+                 ===================================================== --}}
+            @if (session('success'))
+
+                <div class="borrowing-message borrowing-message-success">
+                    {{ session('success') }}
+                </div>
+
+            @endif
+
+
+            {{-- =====================================================
+                 PESAN ERROR
+                 ===================================================== --}}
+            @if (session('error'))
+
+                <div class="borrowing-message borrowing-message-error">
+                    {{ session('error') }}
+                </div>
+
+            @endif
+
+
+            {{-- =====================================================
                  COVER BUKU
                  ===================================================== --}}
             <div class="detail-cover">
@@ -140,6 +164,53 @@
             </div>
 
 
+            {{-- =====================================================
+                 AKSI PEMINJAMAN
+                 ===================================================== --}}
+            @can('mengajukan peminjaman buku')
+
+                <div class="borrowing-action">
+
+                    <div class="borrowing-action-info">
+
+                        <span>
+                            PEMINJAMAN BUKU
+                        </span>
+
+                        <h3>
+                            Ingin membaca buku ini?
+                        </h3>
+
+                        <p>
+                            Ajukan peminjaman dan tunggu persetujuan
+                            dari Admin atau Petugas perpustakaan.
+                        </p>
+
+                    </div>
+
+                    <form
+                        method="POST"
+                        action="{{ route('peminjaman.store', $bukuDitemukan['id']) }}"
+                    >
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="borrowing-button"
+                        >
+                            Ajukan Peminjaman
+                        </button>
+
+                    </form>
+
+                </div>
+
+            @endcan
+
+
+            {{-- =====================================================
+                 KEMBALI
+                 ===================================================== --}}
             <a
                 href="{{ route('buku.index') }}"
                 class="back-button"
