@@ -128,7 +128,20 @@ class PeminjamanController extends Controller
             );
     }
 
+    /**
+     * Menampilkan detail peminjaman untuk pengujian IDOR A4.
+     */
+    public function show($id): View
+    {
+        // Sengaja belum memeriksa kepemilikan peminjaman.
+        $peminjaman = Peminjaman::findOrFail($id);
+        $peminjaman->load(['anggota', 'buku']);
 
+        return view(
+            'peminjaman.show',
+            compact('peminjaman')
+        );
+    }
     /**
      * Menyetujui pengajuan peminjaman.
      */

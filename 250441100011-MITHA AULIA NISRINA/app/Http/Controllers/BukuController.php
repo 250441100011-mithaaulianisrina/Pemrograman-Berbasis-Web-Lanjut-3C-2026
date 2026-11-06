@@ -5,19 +5,46 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\DB;
 
 class BukuController extends Controller
 {
     // Menampilkan halaman daftar buku
-    // Data buku diambil melalui Fetch API dari GET /api/buku
     public function index(Request $request)
     {
         $kategori = $request->query('category');
 
-        // Daftar kategori digunakan untuk pilihan kategori pada form buku
+        // Mengambil daftar kategori
         $daftarKategori = Kategori::orderBy('nama')->get();
 
-        return view('buku.index', compact('kategori', 'daftarKategori'));
+        // Mengambil data buku beserta kategorinya
+        $query = Buku::with('kategori');
+
+        // Memfilter buku berdasarkan kategori jika dipilih
+        if ($kategori) {
+            $query->whereHas('kategori', function ($q) use ($kategori) {
+                $q->where('nama', $kategori);
+            });
+        }
+
+        $daftarBuku = $query->get();
+
+        return view('buku.index', compact(
+            'kategori',
+            'daftarKategori',
+            'daftarBuku'
+        ));
+    }
+
+    // Pencarian buku untuk pengujian SQL Injection A2
+    public function search(Request $request)
+    {
+        $judul = $request->query('judul');
+
+        // Query sengaja dibuat rentan untuk pengujian A2
+        $hasil = DB::select("SELECT * FROM bukus WHERE judul = '$judul'");
+
+        return response()->json($hasil);
     }
 
     // Menampilkan detail satu buku

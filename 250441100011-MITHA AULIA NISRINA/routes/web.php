@@ -8,6 +8,7 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RiwayatPeminjamanController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\Api\BukuController as ApiBukuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,13 +35,16 @@ Route::get('/buku', [BukuController::class, 'index'])
     ])
     ->name('buku.index');
 
+Route::get('/buku-cari', [BukuController::class, 'search'])
+    ->middleware('auth')
+    ->name('buku.search');
+
 Route::get('/buku/{id}', [BukuController::class, 'show'])
     ->middleware([
         'auth',
         'permission:lihat daftar buku',
     ])
     ->name('buku.show');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +80,10 @@ Route::get(
     ])
     ->name('riwayat-peminjaman.index');
 
+// Route sengaja dibuat rentan untuk pengujian IDOR A4
+Route::get('/peminjaman/{id}', [PeminjamanController::class, 'show'])
+    ->middleware('auth')
+    ->name('peminjaman.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -150,6 +158,13 @@ Route::get('/kelola-buku', [BukuCrudController::class, 'index'])
     ])
     ->name('kelola-buku.index');
 
+// Route sengaja dibuat rentan untuk pengujian CSRF A3
+Route::get('/buku/{buku}/hapus', [ApiBukuController::class, 'destroy'])
+    ->middleware([
+        'auth',
+        'permission:kelola data buku',
+    ])
+    ->name('buku.hapus');
 
 /*
 |--------------------------------------------------------------------------

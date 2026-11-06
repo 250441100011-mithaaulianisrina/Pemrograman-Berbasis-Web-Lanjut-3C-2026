@@ -7998,3 +7998,183 @@ body.logout-modal-open {
         width: 100%;
     }
 }
+
+/* =========================================================
+   DETAIL PEMINJAMAN - PENGUJIAN A4 MODUL 6
+   ========================================================= */
+
+.loan-detail-page {
+    min-height: 600px;
+    padding: 75px 25px 90px;
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(169, 71, 107, 0.045),
+            transparent 25%
+        ),
+        #fbf8f6;
+}
+
+.loan-detail-container {
+    width: min(850px, 100%);
+    margin: 0 auto;
+}
+
+.loan-detail-heading {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.loan-detail-eyebrow {
+    display: block;
+    margin-bottom: 12px;
+    color: #a9476b;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+
+.loan-detail-heading h2 {
+    margin: 0;
+    color: #632940;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 600;
+}
+
+.loan-detail-heading p {
+    margin: 12px 0 0;
+    color: #80636e;
+    font-size: 13px;
+}
+
+.loan-detail-card {
+    padding: 35px;
+    background: #ffffff;
+    border: 1px solid #eadde1;
+    border-radius: 12px;
+    box-shadow: 0 12px 35px rgba(70, 35, 48, 0.07);
+}
+
+.loan-detail-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #f0e5e9;
+}
+
+.loan-detail-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #b17b8e;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+}
+
+.loan-detail-card-header h3 {
+    margin: 0;
+    color: #632940;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 23px;
+}
+
+.loan-detail-status {
+    padding: 7px 13px;
+    color: #8f3d5e;
+    background: #fff2f6;
+    border: 1px solid #f0dce5;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.loan-detail-section {
+    padding: 25px 0;
+    border-bottom: 1px solid #f0e5e9;
+}
+
+.loan-detail-section h4 {
+    margin: 0 0 17px;
+    color: #6f2945;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.loan-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.loan-detail-item {
+    min-width: 0;
+    padding: 16px;
+    background: #fff8fa;
+    border: 1px solid #f0e0e7;
+    border-radius: 8px;
+}
+
+.loan-detail-item span {
+    display: block;
+    margin-bottom: 6px;
+    color: #9b7482;
+    font-size: 11px;
+}
+
+.loan-detail-item strong {
+    display: block;
+    overflow-wrap: anywhere;
+    color: #5a3543;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.loan-detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+.loan-detail-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 22px;
+    color: #ffffff;
+    background: #8f3d5e;
+    border: 1px solid #8f3d5e;
+    border-radius: 7px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    transition: 0.25s ease;
+}
+
+.loan-detail-back:hover {
+    color: #ffffff;
+    background: #74304c;
+    border-color: #74304c;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    .loan-detail-page {
+        padding: 45px 15px 60px;
+    }
+
+    .loan-detail-card {
+        padding: 22px 18px;
+    }
+
+    .loan-detail-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .loan-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
