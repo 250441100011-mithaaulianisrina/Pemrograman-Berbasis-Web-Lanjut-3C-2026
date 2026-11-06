@@ -302,6 +302,16 @@
 
     </div>
 
+        {{-- Form penghapusan buku dengan CSRF protection --}}
+    <form
+        id="form-hapus-buku"
+        method="POST"
+        style="display: none;"
+    >
+        @csrf
+        @method('DELETE')
+    </form>
+
 @endsection
 
 
@@ -1062,7 +1072,7 @@
 
 
     // =========================================================
-    // MENGHAPUS BUKU
+    // MENGHAPUS BUKU DENGAN FORM DELETE DAN CSRF
     // =========================================================
 
     async function hapusBuku(id, judul) {
@@ -1082,9 +1092,10 @@
 
 
         const pesanApi =
-            document.getElementById(
-                'pesan-api'
-            );
+            document.getElementById('pesan-api');
+
+        const formHapus =
+            document.getElementById('form-hapus-buku');
 
 
         pesanApi.innerHTML = '';
@@ -1092,22 +1103,31 @@
 
         try {
 
+            // Menentukan alamat penghapusan buku
+            formHapus.action =
+                '/buku/' + encodeURIComponent(id);
+
+
+            // Mengambil token CSRF dan method DELETE dari form
+            const formData = new FormData(formHapus);
+
+
+            // Mengirim permintaan penghapusan
             const response = await fetch(
-                '/api/buku/' +
-                encodeURIComponent(id),
+                formHapus.action,
                 {
-                    method: 'DELETE',
+                    method: 'POST',
 
                     headers: {
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    }
+                        'Accept': 'application/json'
+                    },
+
+                    body: formData
                 }
             );
 
 
-            const result =
-                await response.json();
+            const result = await response.json();
 
 
             if (!response.ok) {
@@ -1121,15 +1141,12 @@
 
 
             const bukuSedangDiedit =
-                document.getElementById(
-                    'buku-id'
-                ).value;
+                document.getElementById('buku-id').value;
 
 
             if (
                 modeEdit &&
-                String(bukuSedangDiedit) ===
-                    String(id)
+                String(bukuSedangDiedit) === String(id)
             ) {
 
                 document.getElementById(
@@ -1171,7 +1188,6 @@
         }
 
     }
-
 
     // =========================================================
     // BATAL UBAH

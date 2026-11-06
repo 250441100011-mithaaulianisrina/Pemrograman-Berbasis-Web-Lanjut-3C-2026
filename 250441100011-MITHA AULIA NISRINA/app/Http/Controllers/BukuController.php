@@ -41,8 +41,8 @@ class BukuController extends Controller
     {
         $judul = $request->query('judul');
 
-        // Query sengaja dibuat rentan untuk pengujian A2
-        $hasil = DB::select("SELECT * FROM bukus WHERE judul = '$judul'");
+        // Menggunakan query binding untuk mencegah SQL Injection
+        $hasil = DB::select('SELECT * FROM bukus WHERE judul = ?', [$judul]);
 
         return response()->json($hasil);
     }

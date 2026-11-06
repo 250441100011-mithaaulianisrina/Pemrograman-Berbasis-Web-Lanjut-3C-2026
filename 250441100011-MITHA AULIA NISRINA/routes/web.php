@@ -158,8 +158,8 @@ Route::get('/kelola-buku', [BukuCrudController::class, 'index'])
     ])
     ->name('kelola-buku.index');
 
-// Route sengaja dibuat rentan untuk pengujian CSRF A3
-Route::get('/buku/{buku}/hapus', [ApiBukuController::class, 'destroy'])
+// Menggunakan DELETE agar penghapusan tidak dapat dilakukan melalui GET
+Route::delete('/buku/{buku}', [ApiBukuController::class, 'destroy'])
     ->middleware([
         'auth',
         'permission:kelola data buku',

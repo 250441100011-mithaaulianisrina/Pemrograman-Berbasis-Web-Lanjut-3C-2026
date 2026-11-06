@@ -42,10 +42,10 @@
         </div>
     </div>
 
-    {{-- Sumber judul dari Blade untuk pengujian A1 --}}
+    {{-- Sumber judul buku dengan proteksi XSS --}}
     <div id="sumber-judul-buku" hidden>
         @foreach ($daftarBuku as $item)
-            <div data-buku-id="{{ $item->id }}">{!! $item->judul !!}</div>
+            <div data-buku-id="{{ $item->id }}">{{ $item->judul }}</div>
         @endforeach
     </div>
 
@@ -128,7 +128,7 @@
             document.querySelectorAll('#sumber-judul-buku [data-buku-id]')
                 .forEach(function(element) {
                     sumberJudul[element.dataset.bukuId] =
-                        element.innerHTML;
+                        element.textContent;
                 });
 
             buku.forEach(function(item) {
