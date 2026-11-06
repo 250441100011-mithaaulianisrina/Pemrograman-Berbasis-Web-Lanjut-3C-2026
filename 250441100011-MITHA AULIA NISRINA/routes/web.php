@@ -39,6 +39,15 @@ Route::get('/buku-cari', [BukuController::class, 'search'])
     ->middleware('auth')
     ->name('buku.search');
 
+// Halaman pengelolaan buku khusus Admin dan Petugas
+Route::get('/buku/create', [BukuCrudController::class, 'index'])
+    ->middleware([
+        'auth',
+        'can:kelola-buku',
+    ])
+    ->name('buku.create');
+
+// Menampilkan detail satu buku
 Route::get('/buku/{id}', [BukuController::class, 'show'])
     ->middleware([
         'auth',
