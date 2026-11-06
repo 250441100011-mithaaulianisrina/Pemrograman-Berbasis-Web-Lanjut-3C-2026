@@ -6,6 +6,7 @@ use App\Models\Buku;
 use App\Models\Peminjaman;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Gate;
 
 class PeminjamanController extends Controller
 {
@@ -133,9 +134,13 @@ class PeminjamanController extends Controller
      */
     public function show($id): View
     {
-        // Sengaja belum memeriksa kepemilikan peminjaman.
-        $peminjaman = Peminjaman::findOrFail($id);
-        $peminjaman->load(['anggota', 'buku']);
+        $peminjaman = Peminjaman::with([
+            'anggota',
+            'buku',
+        ])->findOrFail($id);
+
+        // Memeriksa hak akses menggunakan PeminjamanPolicy.
+        Gate::authorize('view', $peminjaman);
 
         return view(
             'peminjaman.show',
