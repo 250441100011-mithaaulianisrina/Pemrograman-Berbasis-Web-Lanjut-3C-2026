@@ -144,7 +144,6 @@ Route::middleware([
 
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | Kelola Buku
@@ -154,7 +153,7 @@ Route::middleware([
 Route::get('/kelola-buku', [BukuCrudController::class, 'index'])
     ->middleware([
         'auth',
-        'permission:kelola data buku',
+        'can:kelola-buku',
     ])
     ->name('kelola-buku.index');
 
@@ -162,7 +161,7 @@ Route::get('/kelola-buku', [BukuCrudController::class, 'index'])
 Route::delete('/buku/{buku}', [ApiBukuController::class, 'destroy'])
     ->middleware([
         'auth',
-        'permission:kelola data buku',
+        'can:kelola-buku',
     ])
     ->name('buku.hapus');
 

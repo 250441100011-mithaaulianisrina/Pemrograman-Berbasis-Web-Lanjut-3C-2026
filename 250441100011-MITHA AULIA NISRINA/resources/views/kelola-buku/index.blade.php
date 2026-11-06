@@ -46,6 +46,8 @@
         {{-- =====================================================
              FORM TAMBAH DAN UBAH BUKU
              ===================================================== --}}
+        @can('kelola-buku')
+        <div class="book-form-section" id="bagian-form">
         <div class="book-form-section" id="bagian-form">
 
             <div class="section-heading">
@@ -247,7 +249,7 @@
             </form>
 
         </div>
-
+        @endcan
 
         {{-- =====================================================
              TABEL DATA BUKU
@@ -318,6 +320,8 @@
 @push('scripts')
 
 <script>
+
+    const bolehKelolaBuku = @json(auth()->user()->can('kelola-buku'));
 
     let modeEdit = false;
 
@@ -469,29 +473,33 @@
                     </td>
 
                     <td>
+                        ${
+                            bolehKelolaBuku
+                                ? `
+                                    <div class="table-actions">
 
-                        <div class="table-actions">
+                                        <button
+                                            type="button"
+                                            class="table-edit-button"
+                                            data-id="${escapeHtml(item.id)}"
+                                        >
+                                            Ubah
+                                        </button>
 
-                            <button
-                                type="button"
-                                class="table-edit-button"
-                                data-id="${escapeHtml(item.id)}"
-                            >
-                                Ubah
-                            </button>
+                                        <button
+                                            type="button"
+                                            class="table-delete-button"
+                                            data-id="${escapeHtml(item.id)}"
+                                            data-judul="${escapeHtml(item.judul_buku)}"
+                                        >
+                                            Hapus
+                                        </button>
 
-                            <button
-                                type="button"
-                                class="table-delete-button"
-                                data-id="${escapeHtml(item.id)}"
-                                data-judul="${escapeHtml(item.judul_buku)}"
-                            >
-                                Hapus
-                            </button>
-
-                        </div>
-
-                    </td>
+                                    </div>
+                                `
+                                : ''
+                        }
+                  </td>
 
                 `;
 

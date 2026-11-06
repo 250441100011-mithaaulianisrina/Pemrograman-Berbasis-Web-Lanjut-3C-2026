@@ -38,7 +38,7 @@ Route::get('/buku/{buku}', [BukuController::class, 'show'])
 Route::middleware([
     'web',
     'auth',
-    'permission:kelola data buku',
+    'can:kelola-buku',
 ])->group(function () {
 
     // Menambahkan buku
