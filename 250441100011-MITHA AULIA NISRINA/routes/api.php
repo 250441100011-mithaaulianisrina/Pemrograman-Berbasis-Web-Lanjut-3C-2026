@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -9,6 +8,11 @@ use App\Http\Controllers\Api\RekapController;
 |--------------------------------------------------------------------------
 | API Buku - Akses Membaca
 |--------------------------------------------------------------------------
+|
+| Endpoint GET tetap dipertahankan untuk mengambil daftar dan detail buku.
+| Endpoint ini digunakan oleh halaman Daftar Buku dan Kelola Buku melalui
+| Fetch API seperti pada implementasi modul sebelumnya.
+|
 */
 
 // Menampilkan daftar buku
@@ -25,12 +29,17 @@ Route::get('/buku/{buku}', [BukuController::class, 'show'])
 | API Buku - Kelola Data Buku
 |--------------------------------------------------------------------------
 |
-| Hanya Admin dan Petugas yang dapat menambah, mengubah,
-| dan menghapus data buku.
+| Tambah, ubah, dan hapus buku hanya dapat dilakukan oleh pengguna
+| yang sudah login dan memiliki permission "kelola data buku".
+| Permission ini dimiliki oleh Admin dan Petugas.
 |
 */
 
-Route::middleware(['web', 'auth', 'can:kelola-buku'])->group(function () {
+Route::middleware([
+    'web',
+    'auth',
+    'can:kelola-buku',
+])->group(function () {
 
     // Menambahkan buku
     Route::post('/buku', [BukuController::class, 'store'])
@@ -40,12 +49,12 @@ Route::middleware(['web', 'auth', 'can:kelola-buku'])->group(function () {
     Route::put('/buku/{buku}', [BukuController::class, 'update'])
         ->name('api.buku.update');
 
-    Route::patch('/buku/{buku}', [BukuController::class, 'update'])
-        ->name('api.buku.update.patch');
+    Route::patch('/buku/{buku}', [BukuController::class, 'update']);
 
     // Menghapus buku
     Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
         ->name('api.buku.destroy');
+
 });
 
 
@@ -53,16 +62,17 @@ Route::middleware(['web', 'auth', 'can:kelola-buku'])->group(function () {
 |--------------------------------------------------------------------------
 | API Rekap
 |--------------------------------------------------------------------------
+|
+| Route rekap dari modul sebelumnya tetap dipertahankan.
+|
 */
 
-// Rekap buku berdasarkan kategori
 Route::get(
     '/rekap/buku-per-kategori',
     [RekapController::class, 'bukuPerKategori']
-)->name('api.rekap.buku-kategori');
+);
 
-// Rekap peminjaman berdasarkan buku
 Route::get(
     '/rekap/pemminjaman-per-buku',
     [RekapController::class, 'peminjamanPerBuku']
-)->name('api.rekap.peminjaman-buku');
+);
