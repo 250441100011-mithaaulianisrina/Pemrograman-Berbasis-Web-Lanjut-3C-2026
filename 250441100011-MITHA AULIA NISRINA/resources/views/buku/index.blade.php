@@ -66,7 +66,7 @@
 
         do {
             const response = await fetch(
-                '/api/buku?page=' + halaman,
+                '/api/api/buku?page=' + halaman,
                 {
                     method: 'GET',
                     headers: {
