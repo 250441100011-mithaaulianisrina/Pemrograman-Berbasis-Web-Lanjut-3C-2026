@@ -66,7 +66,7 @@
 
         do {
             const response = await fetch(
-                '/api/buku?page=' + halaman,
+                @json(route('api.buku.index')) + '?page=' + halaman,
                 {
                     method: 'GET',
                     headers: {
