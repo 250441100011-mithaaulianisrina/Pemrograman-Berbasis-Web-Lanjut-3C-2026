@@ -48,7 +48,6 @@
              ===================================================== --}}
         @can('kelola-buku')
         <div class="book-form-section" id="bagian-form">
-        <div class="book-form-section" id="bagian-form">
 
             <div class="section-heading">
 
@@ -349,7 +348,7 @@
         do {
 
             const response = await fetch(
-                '/api/buku?page=' + halaman,
+                '/api/api/buku?page=' + halaman,
                 {
                     method: 'GET',
 
@@ -684,7 +683,7 @@
 
 
             const response = await fetch(
-                '/api/buku/' + encodeURIComponent(id),
+                '/api/api/buku/' + encodeURIComponent(id),
                 {
                     method: 'GET',
 
@@ -950,9 +949,9 @@
         try {
 
             const url = modeEdit
-                ? '/api/buku/' +
+                ? '/api/api/buku/' +
                     encodeURIComponent(bukuId)
-                : '/api/buku';
+                : '/api/api/buku';
 
 
             const response = await fetch(
